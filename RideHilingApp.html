@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ride-Hailing App</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      width: 90%;
+      max-width: 400px;
+      background: #fff;
+      color: #333;
+      padding: 25px;
+      border-radius: 15px;
+      box-shadow: 0 6px 25px rgba(0, 0, 0, 0.3);
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #302b63;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 12px;
+      margin: 10px 0;
+      border-radius: 8px;
+      border: 1px solid #aaa;
+      font-size: 15px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #ff512f, #dd2476);
+      color: white;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    button:hover {
+      transform: scale(1.05);
+      box-shadow: 0 4px 15px rgba(255, 80, 120, 0.4);
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    .fare-box {
+      text-align: center;
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 10px;
+      background: #f4f4f4;
+      font-weight: bold;
+      color: #302b63;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container" id="loginPage">
+    <h2>Login</h2>
+    <input type="text" id="loginUser" placeholder="Enter Username" required>
+    <input type="password" id="loginPass" placeholder="Enter Password" required>
+    <button onclick="login()">Login</button>
+    <p style="text-align:center; margin-top:10px;">No account? 
+      <a href="#" onclick="showRegister()">Register here</a>
+    </p>
+  </div>
+
+  <div class="container hidden" id="registerPage">
+    <h2>Register</h2>
+    <input type="text" id="regUser" placeholder="Enter Username" required>
+    <input type="email" id="regEmail" placeholder="Enter Email" required>
+    <input type="password" id="regPass" placeholder="Enter Password" required>
+    <button onclick="register()">Register</button>
+    <p style="text-align:center; margin-top:10px;">Already have an account? 
+      <a href="#" onclick="showLogin()">Login here</a>
+    </p>
+  </div>
+
+  <div class="container hidden" id="ridePage">
+    <h2>Book a Ride 🚖</h2>
+    <input type="text" id="pickup" placeholder="Enter Pickup Location" required>
+    <input type="text" id="drop" placeholder="Enter Drop Location" required>
+    <select id="rideType">
+      <option value="Mini">Mini</option>
+      <option value="Sedan">Sedan</option>
+      <option value="SUV">SUV</option>
+    </select>
+    <button onclick="calculateFare()">Get Fare Estimate</button>
+    <div class="fare-box hidden" id="fareBox"></div>
+    <button onclick="confirmRide()">Confirm Ride</button>
+  </div>
+
+  <script>
+    function showRegister() {
+      document.getElementById("loginPage").classList.add("hidden");
+      document.getElementById("registerPage").classList.remove("hidden");
+    }
+
+    function showLogin() {
+      document.getElementById("registerPage").classList.add("hidden");
+      document.getElementById("loginPage").classList.remove("hidden");
+    }
+
+    function login() {
+      let user = document.getElementById("loginUser").value;
+      let pass = document.getElementById("loginPass").value;
+      if (user && pass) {
+        alert("Login Successful! Welcome " + user);
+        document.getElementById("loginPage").classList.add("hidden");
+        document.getElementById("ridePage").classList.remove("hidden");
+      } else {
+        alert("Please enter valid login details");
+      }
+    }
+
+    function register() {
+      let user = document.getElementById("regUser").value;
+      let email = document.getElementById("regEmail").value;
+      let pass = document.getElementById("regPass").value;
+      if (user && email && pass) {
+        alert("Registration Successful! Please Login.");
+        showLogin();
+      } else {
+        alert("Please fill all fields.");
+      }
+    }
+
+    function calculateFare() {
+      let rideType = document.getElementById("rideType").value;
+      let baseFare = 50;
+      let fare = 0;
+      if (rideType === "Mini") fare = baseFare + 100;
+      else if (rideType === "Sedan") fare = baseFare + 200;
+      else if (rideType === "SUV") fare = baseFare + 300;
+
+      document.getElementById("fareBox").innerText = 
+        "Estimated Fare: ₹" + fare;
+      document.getElementById("fareBox").classList.remove("hidden");
+    }
+
+    function confirmRide() {
+      let pickup = document.getElementById("pickup").value;
+      let drop = document.getElementById("drop").value;
+      if (pickup && drop) {
+        alert("Ride Confirmed! 🚕\nPickup: " + pickup + "\nDrop: " + drop);
+      } else {
+        alert("Please enter Pickup and Drop locations.");
+      }
+    }
+  </script>
+</body>
+</html>
